@@ -1074,7 +1074,10 @@ func (s *Server) handlePasswordGrant(w http.ResponseWriter, r *http.Request, cli
 	}
 
 	// Which connector
-	connID := s.passwordConnector
+	connID := q.Get("connectorid")
+	if connID == "" {
+		connID = s.passwordConnector
+	}
 	conn, err := s.getConnector(connID)
 	if err != nil {
 		s.tokenErrHelper(w, errInvalidRequest, "Requested connector does not exist.", http.StatusBadRequest)
